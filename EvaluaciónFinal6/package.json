@@ -1,0 +1,21 @@
+{
+  "name": "buscadordepropiedades",
+  "version": "1.0.0",
+  "description": "Buscador compacto de propiedades dentro de una base de datos JSON",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "frameworks"
+  ],
+  "author": "Freddy Febres",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.18.2",
+    "nodemon": "^1.14.11"
+  }
+}
