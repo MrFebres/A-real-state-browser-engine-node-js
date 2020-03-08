@@ -1,13 +1,14 @@
 /*<<<--------------------Función autoejecutable NodeJs-------------------->>>*/
 (function(document, window, undefined, $) {
     (function() {
-        return Search = {
+        return search = {
           $buscar: $("#buscar"),
           $tipo: $("#tipo"),
           $ciudad: $("#ciudad"),
+          apiUrl: '',
 
           //Inicia funciones de busqueda.
-          Init: () => {
+          Init: function() {
             this.getSettings();
             //Inicializador del elemento Slider
             $("#rangoPrecio").ionRangeSlider({
@@ -24,12 +25,12 @@
                 if ($("#checkPersonalizada")[0].checked) {
                     let valores = $("#rangoPrecio").val();
                     valores = valores.split(";");
-                    var endpoint = `http://localhost:3000/ciudad/${$("#ciudad").val()}/tipo/${$("#tipo").val()}/desde/${valores[0]}/hasta/${valores[1]}`;
+                    var endpoint = this.apiUrl+`/ciudad/${$("#ciudad").val()}/tipo/${$("#tipo").val()}/desde/${valores[0]}/hasta/${valores[1]}`;
                 }
                  else {
-                    var endpoint = "http://localhost:3000/search";
+                    var endpoint = this.apiUrl+'/search';
                 }
-                this.ajaxRequest(endpoint, 'GET')
+                this.ajaxRequest(endpoint, 'GET', 'json', {})
                   .done(data => {
                       if (!data.error) {
                             console.log(data);
@@ -41,7 +42,7 @@
           },
 
           //Muestra u oculta opciones avanzadas.
-          setSearch: () => {
+          setSearch: function() {
             let busqueda = $("#checkPersonalizada");
             busqueda.on('change', (e) => {
               this.customSearch = !this.customSearch;
@@ -50,29 +51,30 @@
           },
 
           //Función ajax pórtatil.
-          ajaxRequest: (url, type) => {
+          ajaxRequest: function(url, type, dataType, data) {
             return $.ajax({
               url: url,
               type: type,
-              dataType: 'json'
+              dataType: dataType,
+              data: data
             })
           },
 
           //Obtiene ciudades y tipos.
-          getSettings: () => {
-            let endpoint = 'http://localhost:3000/listas';
-            this.ajaxRequest(endpoint, 'GET',{})
+          getSettings: function() {
+            let endpoint = this.apiUrl+'/listas'
+            this.ajaxRequest(endpoint, 'GET', 'json', {})
             .done(data => {
               if (!data.error) {
                 console.log(data);
-                $ciudad.append(this.renderSelect(data.ciudades));
-                $tipo.append(this.renderSelect(data.tipos));
+                this.$ciudad.append(this.renderSelect(data.ciudades));
+                this.$tipo.append(this.renderSelect(data.tipos));
               }
             })
           },
 
           //Renderiza ciudades y tipos.
-          renderSelect: (data) => {
+          renderSelect: function(data) {
             var html = '';
             data.forEach((key, idx) => {
               html += `<option value="${key}">${key}</option>`;
@@ -81,13 +83,13 @@
           },
 
           //Renderiza búsqueda personalizada.
-          renderObj: (obj) => {
+          renderObj: function(obj) {
             var html = '';
 
-            obj.forEach((key, idx) => {
+            obj.forEach(function(key, idx)  {
               html += `<div class="card horizontal">
                       <div class="card-image">
-                          <img src="http://localhost:3000/img/home.jpg">
+                          <img src="http://localhost:8080/img/home.jpg">
                       </div>
                       <div class="card-stacked">
                           <div class="card-content">
@@ -117,5 +119,5 @@
             }
           };
         })();
-        Search.Init();
+        search.Init();
 })(document, window, undefined, jQuery);

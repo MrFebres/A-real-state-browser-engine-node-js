@@ -1,5 +1,5 @@
 const fs    = require('fs'),
-      path  = require('path')
+      path  = require('path');
 
 module.exports = {
 
@@ -7,7 +7,7 @@ module.exports = {
   // No aplica ya que solo se leerá el archivo. No se reescribirá
   // }
 
-  getDataAll: function() {
+  getDataAll: () => {
     let dataPath = __dirname + path.join('/data/data.json');
     return new Promise((resolve, reject) => {
         fs.readFile(dataPath, 'utf8', (err, readData) => {
